@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  # debug | release | test 运行环境
+  level: test
+
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: mysqlName
+  password: mysql123
+  db_name: hh
+  config: charset=utf8mb4&parseTime=True&loc=Local
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  data_base: 1
+
+jwt:
+  # 设置jwt签名加密时使用的秘钥
+  secret: a-M_wEK8HTiuoyVUmij9EMu@XjdpaccnvaC.fcbqhFe9D!TK-n.a77xkDuRx@myydrkT7EXvdCjLnWcUsY*JY4BJbPPR.gFLEedv
+  # 设置jwt过期时间
+  ttl: 86400
+  # 设置前端传递过来的令牌名称
+  name: Authorization
+
+log:
+  level: info
+
+redisPrefix: gin_template
+

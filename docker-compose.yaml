@@ -1,0 +1,47 @@
+version: '0.1'
+services:
+  redis:
+    image: redis:7.0 # 使用官方镜像
+    container_name: go-redis
+    restart: on-failure # always
+    volumes:
+      - ./data/redis/data:/data # 数据卷，持久化Redis数据
+      - ./data/redis/logs:/logs
+    command:
+      - redis-server
+    ports:
+      - '6379:6379'
+    environment:
+      TZ: Asia/Shanghai  # 解决容器 时区的问题
+  mysql:
+    image: mysql:8.0
+    container_name: go-mysql
+    restart: on-failure # always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      TZ: Asia/Shanghai
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./script:/docker-entrypoint-initdb.d # MySQL 容器将会执行script目录中的所有.sql文件（会有乱码问题，还是手动吧）
+      - ./data/mysql/data:/var/lib/mysql # 数据卷，持久化MySQL数据
+    command:
+      --max_connections=1000
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password
+  web:
+    container_name: gin-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure # always
+    volumes:
+      # 这个共享卷是用来存放配置文件。
+      - ./config/:/app/config/
+      # 该共享卷用来存储日志文件
+      - ./logs/:/app/logger/
+    ports:
+      - '8080-8080'
