@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	defer global.RedisStore.Close() // 确保在程序结束时关闭store连接
 	router := initialize.Init()
 	mode := global.Config.Server.Level
 	gin.SetMode(mode)

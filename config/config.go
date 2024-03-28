@@ -26,12 +26,13 @@ type Redis struct {
 	Host     string
 	Port     string
 	Password string
-	DataBase int `mapstructure:"data_base"`
+	DataBase int    `mapstructure:"data_base"`
+	StoreDb  string `mapstructure:"store_db"`
 }
 
 type Jwt struct {
 	Secret string
-	TTL    string
+	TTL    int
 	Name   string
 }
 
@@ -68,7 +69,7 @@ func InitLoadConfig() *AllConfig {
 	// var configData *AllConfig
 	configData := &AllConfig{}
 	if err := viper.Unmarshal(configData); err != nil {
-		fmt.Printf("Read config file to struct err: %s\n", err)
+		fmt.Printf("Read config file to struct err: %s\n", err.Error())
 		panic("Read config file to struct err")
 	}
 	fmt.Printf("Unmarshal file success. configData: %+v\n", configData)

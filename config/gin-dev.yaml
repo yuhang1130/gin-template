@@ -2,13 +2,12 @@ server:
   port: 8080
   # debug | release | test 运行环境
   level: debug
-
 datasource:
   host: 127.0.0.1
   port: 3306
-  username: mysqlName
+  username: root
   password: mysql123
-  db_name: hh
+  db_name: gin_db
   config: charset=utf8mb4&parseTime=True&loc=Local
 
 redis:
@@ -16,6 +15,7 @@ redis:
   port: 6379
   password:
   data_base: 1
+  store_db: 2
 
 jwt:
   # 设置jwt签名加密时使用的秘钥
@@ -27,6 +27,3 @@ jwt:
 
 log:
   level: debug
-
-redisPrefix: gin_template
-

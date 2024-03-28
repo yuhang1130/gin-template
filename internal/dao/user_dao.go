@@ -1,19 +1,17 @@
 package dao
 
 import (
-	"context"
-	"fmt"
-	"gin-template/internal/api/request"
 	"gin-template/internal/model"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type UserRepo interface {
-	Insert(ctx context.Context, dto request.UserCreateDto) (*model.User, error)
-	// login(ctx context.Context, dto request.UserLoginDto) (response.UserLoginResDto, error)
-	// logout(ctx context.Context, user model.User) (bool, error)
-	// info(ctx context.Context, user model.User) (*model.User, error)
+	Insert(ctx *gin.Context, entity model.User) error
+	GetByUserName(ctx *gin.Context, userName string) (*model.User, error)
+	// logout(ctx *gin.Context, user model.User) (bool, error)
+	// info(ctx *gin.Context, user model.User) (*model.User, error)
 }
 
 type UserDao struct {
@@ -24,16 +22,21 @@ func NewUserDao(db *gorm.DB) UserRepo {
 	return &UserDao{db: db}
 }
 
-func (c *UserDao) Insert(ctx context.Context, dto request.UserCreateDto) (*model.User, error) {
-	fmt.Printf("UserDao------Insert-----: %+v \n", dto)
-	return &model.User{}, nil
+func (u *UserDao) Insert(ctx *gin.Context, entity model.User) error {
+	return u.db.WithContext(ctx).Create(&entity).Error
 }
 
-// func (c *UserDao) login(ctx context.Context, id uint64) (response.UserLoginResDto, error) {
+func (u *UserDao) GetByUserName(ctx *gin.Context, userName string) (*model.User, error) {
+	var user model.User
+	err := u.db.WithContext(ctx).Where("user_name=?", userName).First(&user).Error
+	return &user, err
+}
+
+// func (c *UserDao) login(ctx *gin.Context, id uint64) (response.UserLoginResDto, error) {
 // }
 
-// func (c *UserDao) logout(ctx context.Context, id uint64) (bool, error) {
+// func (c *UserDao) logout(ctx *gin.Context, id uint64) (bool, error) {
 // }
 
-// func (c *UserDao) info(ctx context.Context, id uint64) (model.User, error) {
+// func (c *UserDao) info(ctx *gin.Context, id uint64) (model.User, error) {
 // }

@@ -8,15 +8,13 @@ import (
 )
 
 type User struct {
-	gorm.Model
-	Username   string `gorm:"type:varchar(50);not null;unique;comment:'用户名'" json:"userName"`
-	Password   string `gorm:"size:255;not null;comment:'用户密码'" json:"passWord"`
-	Salt       string `gorm:"type:varchar(255);comment:'盐'" json:"salt"`
-	IsAdmin    string `gorm:"type:varchar(100);comment:'是否为管理员'" json:"isAdmin"`
-	Phone      string `gorm:"type:varchar(15);not null;comment:'手机号'" json:"phone"`
-	Email      string `gorm:"type:varchar(100);comment:'邮箱'" json:"email"`
-	CreateUser uint64 `gorm:"type:uint(64);comment:'创建者'" json:"createUser"`
-	UpdateUser uint64 `gorm:"type:uint(64);comment:'更新者'" json:"updateUser"`
+	BaseModel
+	UserName string `gorm:"type:varchar(50);not null;unique;comment:用户名" json:"userName"`
+	Password string `gorm:"size:255;not null;comment:用户密码" json:"passWord"`
+	Salt     string `gorm:"type:varchar(255);comment:盐" json:"salt"`
+	IsAdmin  bool   `gorm:"type:bool;default:false;comment:是否为管理员" json:"isAdmin"`
+	Phone    string `gorm:"type:varchar(15);not null;comment:手机号" json:"phone"`
+	Email    string `gorm:"type:varchar(100);comment:邮箱" json:"email"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
@@ -25,7 +23,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
 	u.UpdatedAt = time.Now()
 	// 从上下文获取用户信息
 	value := tx.Statement.Context.Value(enum.CurrentId)
-	if uid, ok := value.(uint64); ok {
+	if uid, ok := value.(uint); ok {
 		u.CreateUser = uid
 		u.UpdateUser = uid
 	}
@@ -37,7 +35,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) error {
 	u.UpdatedAt = time.Now()
 	// 从上下文获取用户信息
 	value := tx.Statement.Context.Value(enum.CurrentId)
-	if uid, ok := value.(uint64); ok {
+	if uid, ok := value.(uint); ok {
 		u.UpdateUser = uid
 	}
 	return nil

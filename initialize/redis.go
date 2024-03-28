@@ -3,9 +3,11 @@ package initialize
 import (
 	"context"
 	"fmt"
+	"gin-template/common/enum"
 	"gin-template/global"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/boj/redistore"
+	redis "github.com/go-redis/redis/v8"
 )
 
 func initRedis() *redis.Client {
@@ -22,4 +24,19 @@ func initRedis() *redis.Client {
 	}
 	global.Log.Infof("redis connect ping successes. pong: %s\n", pong)
 	return client
+}
+
+func initRedisStore() *redistore.RediStore {
+	redisOpt := global.Config.Redis
+	store, err := redistore.NewRediStoreWithDB(
+		10, "tcp", fmt.Sprintf("%s:%s", redisOpt.Host, redisOpt.Port), "", redisOpt.StoreDb, []byte(global.Config.Jwt.Secret),
+	)
+	if err != nil {
+		global.Log.Errorf("redisStore Init Fail. Msg: %+v \n", err.Error())
+		panic(err)
+	}
+	store.SetMaxAge(global.Config.Jwt.TTL)
+	store.SetKeyPrefix(enum.SessionPrefix)
+
+	return store
 }

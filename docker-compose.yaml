@@ -18,10 +18,13 @@ services:
     container_name: go-mysql
     restart: on-failure # always
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      TZ: Asia/Shanghai
-      MYSQL_CHARSET: utf8mb4
-      MYSQL_COLLATION: utf8mb4_general_ci
+      # 设置默认的身份验证插件为 mysql_native_password
+      MYSQL_DATABASE: gin_db
+      MYSQL_ROOT_PASSWORD: mysql123
+      MYSQL_USER: mysqlName
+      MYSQL_PASSWORD: mysql123
+      MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
+      TZ: Asia/Shanghai # 解决容器 时区的问题
     ports:
       - '3306:3306'
     volumes:

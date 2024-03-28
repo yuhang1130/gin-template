@@ -2,7 +2,6 @@ package initialize
 
 import (
 	"errors"
-	"fmt"
 	"gin-template/global"
 	"gin-template/internal/model"
 	"time"
@@ -19,10 +18,9 @@ var (
 	GormToManyRequestError = errors.New("gorm: to many request")
 )
 
-func InitDatabase() *gorm.DB {
+func initDatabase() *gorm.DB {
 	dsn := global.Config.DataSource.Dsn()
-	global.Log.Infof("dsn-----: %s", dsn)
-	fmt.Println()
+	global.Log.Infof("dsn-----: %s \n", dsn)
 	var ormLogger logger.Interface
 	if gin.Mode() == "debug" {
 		ormLogger = logger.Default.LogMode(logger.Info)
@@ -58,7 +56,7 @@ func InitDatabase() *gorm.DB {
 	GormRateLimiter(db, rate.NewLimiter(500, 1000))
 
 	// 自动迁移表结构
-	// dbAutoMigrate(db)
+	dbAutoMigrate(db)
 	return db
 }
 
