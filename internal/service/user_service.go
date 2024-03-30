@@ -20,7 +20,7 @@ type UserService interface {
 	Register(ctx *gin.Context, dto request.UserCreateDto) error
 	Login(ctx *gin.Context, dto request.UserLoginDto) (*response.UserLoginResDto, error)
 	Logout(ctx *gin.Context) (bool, error)
-	// info(ctx *gin.Context, user model.User) (*model.User, error)
+	Info(ctx *gin.Context) (*enum.PartialUser, error)
 }
 
 type UserImpl struct {
@@ -134,6 +134,19 @@ func (ui *UserImpl) Logout(ctx *gin.Context) (bool, error) {
 		global.Log.Errorf("Logout Error saving session. err: %s", err.Error())
 		return false, err
 	}
+
+	// 清除cookie
+	ctx.SetCookie("gin.sid", "", -1, "/", "", false, true)
 	global.Log.Warnf("Logout Success. sessionID: %s, userName: %s", sessionID, userName)
 	return true, nil
+}
+
+func (ui *UserImpl) Info(ctx *gin.Context) (*enum.PartialUser, error) {
+	sessionData, err := utils.GetSessionData(ctx)
+	if err != nil {
+		global.Log.Errorf("GetSessionData fail. msg: %s", err.Error())
+		return &enum.PartialUser{}, err
+	}
+
+	return &sessionData.User, nil
 }

@@ -95,3 +95,21 @@ func (uc *UserController) Logout(ctx *gin.Context) {
 		Data: resp,
 	})
 }
+
+func (uc *UserController) Info(ctx *gin.Context) {
+	code := errorCode.SUCCESS
+	resp, err := uc.service.Info(ctx)
+	if err != nil {
+		code = errorCode.ERROR
+		global.Log.Warnf("UserController Info Error: %s \n", err.Error())
+		ctx.JSON(http.StatusOK, common.Result{
+			Code: code,
+			Msg:  err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, common.Result{
+		Code: code,
+		Data: resp,
+	})
+}

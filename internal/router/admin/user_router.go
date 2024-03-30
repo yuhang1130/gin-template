@@ -26,6 +26,7 @@ func (u *UserRouter) InitApiRouter(router *gin.RouterGroup) {
 		publicRouter.POST("/register", userCtl.Register)
 		publicRouter.POST("/login", userCtl.Login)
 		privateRouter.POST("/logout", userCtl.Logout)
+		privateRouter.POST("/info", userCtl.Info)
 		// privateRouter.POST("", employeeCtl.AddEmployee)
 		// privateRouter.POST("/status/:status", employeeCtl.OnOrOff)
 		// privateRouter.PUT("/editPassword", employeeCtl.EditPassword)
