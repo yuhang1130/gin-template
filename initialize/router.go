@@ -10,6 +10,7 @@ import (
 
 func routerInit() *gin.Engine {
 	r := gin.New()
+	r.Use(gin.Recovery())
 
 	// 使用自定义的 logrus 中间件
 	r.Use(middleware.LoggerMiddleware(global.Log))
