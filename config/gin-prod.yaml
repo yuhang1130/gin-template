@@ -26,7 +26,7 @@ jwt:
   name: Authorization
 
 log:
-  level: info
+  level: warn
 
 redisPrefix: gin_template
 

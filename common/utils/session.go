@@ -12,8 +12,8 @@ import (
 func GetSessionData(ctx *gin.Context) (*enum.SessionDto, error) {
 	var sessionData = &enum.SessionDto{}
 	// 获取session
-	session, _ := global.RedisStore.Get(ctx.Request, "gin.sid")
-	sessionDataJSON, ok := session.Values["sessionData"].(string)
+	session, _ := global.RedisStore.Get(ctx.Request, enum.Sid)
+	sessionDataJSON, ok := session.Values[enum.SessionData].(string)
 	if !ok {
 		global.Log.Error("sessionDataJSON字符串获取失败！")
 		return sessionData, errorCode.Error_TOKEN_EXPIRE

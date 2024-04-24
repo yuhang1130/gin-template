@@ -5,17 +5,13 @@ const (
 	CurrentName = "currentName"
 )
 
-type PageNum = int
-
 const (
-	MaxPageSize PageNum = 100 // 单页最大数量
-	MinPageSize PageNum = 10  // 单页最小数量
-)
+	MaxPageSize int = 100 // 单页最大数量
+	MinPageSize int = 10  // 单页最小数量
 
-type CommonInt = int
-
-const (
-	MaxUrl CommonInt = 1
+	Sid         string = "gin.sid"
+	SessionID   string = "sessionID"
+	SessionData string = "sessionData"
 )
 
 type PartialUser struct {

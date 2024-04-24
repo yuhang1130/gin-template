@@ -75,7 +75,6 @@ func (ui *UserImpl) Login(ctx *gin.Context, data request.UserLoginDto) (*respons
 	if user.Status == enum.DISABLE {
 		return nil, errorCode.Error_ACCOUNT_LOCKED
 	}
-	fmt.Println("user------", user)
 
 	// 4.存会话信息
 	UserSession := enum.SessionDto{
@@ -92,9 +91,9 @@ func (ui *UserImpl) Login(ctx *gin.Context, data request.UserLoginDto) (*respons
 	// 将用户数据转换为JSON字符串
 	UserSessionJSON, _ := json.Marshal(UserSession)
 
-	session, _ := global.RedisStore.Get(ctx.Request, "gin.sid")
+	session, _ := global.RedisStore.Get(ctx.Request, enum.Sid)
 	// 将JSON数据存储为字符串
-	session.Values["sessionData"] = string(UserSessionJSON)
+	session.Values[enum.SessionData] = string(UserSessionJSON)
 	// 保存更改
 	if err := session.Save(ctx.Request, ctx.Writer); err != nil {
 		global.Log.Errorf("Error saving session: %v", err.Error())
@@ -117,7 +116,7 @@ func (ui *UserImpl) Login(ctx *gin.Context, data request.UserLoginDto) (*respons
 }
 
 func (ui *UserImpl) Logout(ctx *gin.Context) (bool, error) {
-	sessionID := ctx.MustGet("sessionID")
+	sessionID := ctx.MustGet(enum.SessionID)
 	sessionData, err := utils.GetSessionData(ctx)
 	if err != nil {
 		global.Log.Errorf("GetSessionData fail. msg: %s", err.Error())
@@ -126,9 +125,9 @@ func (ui *UserImpl) Logout(ctx *gin.Context) (bool, error) {
 	userName := sessionData.User.UserName
 
 	// 获取session
-	session, _ := global.RedisStore.Get(ctx.Request, "gin.sid")
+	session, _ := global.RedisStore.Get(ctx.Request, enum.Sid)
 	// 删除用户信息
-	delete(session.Values, "sessionData")
+	delete(session.Values, enum.SessionData)
 	// 保存更改
 	if err := session.Save(ctx.Request, ctx.Writer); err != nil {
 		global.Log.Errorf("Logout Error saving session. err: %s", err.Error())
@@ -136,7 +135,7 @@ func (ui *UserImpl) Logout(ctx *gin.Context) (bool, error) {
 	}
 
 	// 清除cookie
-	ctx.SetCookie("gin.sid", "", -1, "/", "", false, true)
+	ctx.SetCookie(enum.Sid, "", -1, "/", "", false, true)
 	global.Log.Warnf("Logout Success. sessionID: %s, userName: %s", sessionID, userName)
 	return true, nil
 }

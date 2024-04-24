@@ -32,7 +32,7 @@ type Redis struct {
 
 type Jwt struct {
 	Secret string
-	TTL    int
+	TTL    int64
 	Name   string
 }
 

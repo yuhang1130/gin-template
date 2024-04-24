@@ -20,5 +20,5 @@ var (
 	Error_PASSWORD_EDIT_FAILED = errors.New("密码修改失败")
 	Error_SESSION_SAVE_FAILED  = errors.New("session会话存储失败")
 	Error_TOKEN_EXPIRE         = errors.New("token已过期")
-	Error_PARSE_TOKEN_FAILED   = errors.New("解析token失败")
+	Error_INVALID_TOKEN        = errors.New("token无效")
 )

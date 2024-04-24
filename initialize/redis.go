@@ -35,7 +35,7 @@ func initRedisStore() *redistore.RediStore {
 		global.Log.Errorf("redisStore Init Fail. Msg: %+v \n", err.Error())
 		panic(err)
 	}
-	store.SetMaxAge(global.Config.Jwt.TTL)
+	store.SetMaxAge(int(global.Config.Jwt.TTL))
 	store.SetKeyPrefix(enum.SessionPrefix)
 
 	return store

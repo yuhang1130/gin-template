@@ -84,7 +84,7 @@ func SlowQueryLog(db *gorm.DB) {
 			duration := now.Sub(start.(time.Time))
 			// 一般认为 200 Ms 为Sql慢查询
 			if duration > time.Millisecond*200 {
-				//global.Log.Error("慢查询", "SQL:", d.Statement.SQL.String())
+				global.Log.Error("慢查询", "SQL:", d.Statement.SQL.String())
 			}
 		}
 	})

@@ -12,10 +12,12 @@ require (
 	gorm.io/gorm v1.25.8
 )
 
-require github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff
+require (
+	github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff
+	github.com/golang-jwt/jwt/v5 v5.2.1
+)
 
 require (
-	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 )
