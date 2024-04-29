@@ -1,39 +1,40 @@
 # 编译阶段：引用最小编译环境
-FROM golang:1.22.0 AS builder
+FROM golang:1.22.0-alpine AS builder
+ENV TZ=Asia/Shanghai
+
+# 为了减小镜像大小，添加必要的编译工具
+RUN apk add --no-cache tzdata build-base
 
 # 镜像默认工作目录
 WORKDIR /build
 
+# 明确指定需要的文件，而不是复制所有代码，提高构建效率
+COPY go.mod go.sum ./
 
-# 防止多次拉取依赖
-ADD go.mod .
-ADD go.sum .
 # 配置镜像golang的默认配置,方便拉取依赖
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod download
 
-# 拷贝当前目录所有文件到工作目录
+# 构建
 COPY . .
-
-# 设置编译环境并进行编译
-RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64  go build -o /app/gin-server .
+RUN GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -o server .
 
 # 构建阶段：使用 alpine 最小构建
-FROM alpine
+FROM alpine:3.19
+ENV TZ=Asia/Shanghai
 
 # 设置镜像工作目录
 WORKDIR /app
 
-# 在builder阶段复制可执行的go二进制文件app/go-exporter 到/app/go_exporter中
-COPY --from=builder /app/gin-server /app/gin-server
-# 创建日志文件夹
-RUN mkdir /app/logger
+# 在builder阶段复制可执行的go二进制文件和配置文件
+COPY --from=builder /build/server .
+COPY --from=builder /build/config/ config
 
-# 时区设置
-ENV TZ="Asia/Shanghai"
+# 确保运行时所需的库已安装
+RUN apk --no-cache add ca-certificates
+
+# 启动服务器
+CMD ["./server"]
 
 # 开放端口
 EXPOSE 8080
-
-# 启动服务器
-CMD ["/app/gin-server"]

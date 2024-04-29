@@ -10,7 +10,7 @@ const (
 
 var (
 	Error_PASSWORD_ERROR       = errors.New("密码错误")
-	Error_ACCOUNT_NOT_FOUND    = errors.New("账号不存在")
+	Error_ACCOUNT_NOT_FOUND    = errors.New("账号或密码错误")
 	Error_ACCOUNT_LOCKED       = errors.New("账号被锁定")
 	Error_ACCOUNT_EXISTS       = errors.New("账号已存在")
 	Error_UNKNOWN_ERROR        = errors.New("未知错误")

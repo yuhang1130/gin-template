@@ -44,6 +44,8 @@ func (uc *UserController) Register(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, common.Result{
+		Msg:  "success",
+		Data: true,
 		Code: code,
 	})
 }

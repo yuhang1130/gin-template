@@ -59,6 +59,7 @@ func InitLoadConfig() *AllConfig {
 
 	// 设置配置文件的路径（这里是相对于当前工作目录）
 	viper.AddConfigPath("./config")
+	// viper.AddConfigPath("/Users/yuhanghe/2024Codes/yuhang/gin-template/config") //go build不会自动包含或调整资源文件的位置
 
 	// 读取配置文件
 	if err := viper.ReadInConfig(); err != nil {
