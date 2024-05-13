@@ -2,7 +2,7 @@ package auth
 
 import (
 	"fmt"
-	"gin-template/common/errorCode"
+	errorCode "gin-template/common/error_code"
 	"gin-template/global"
 	"time"
 

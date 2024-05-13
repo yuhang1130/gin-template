@@ -62,9 +62,12 @@ func initDatabase() *gorm.DB {
 
 // 自动迁移表结构
 func dbAutoMigrate(db *gorm.DB) {
-	_ = db.AutoMigrate(
+	err := db.AutoMigrate(
 		&model.User{},
 	)
+	if err != nil {
+		global.Log.Errorln("gorm: 自动迁移表结构失败. Err:", err)
+	}
 }
 
 // 慢查询日志

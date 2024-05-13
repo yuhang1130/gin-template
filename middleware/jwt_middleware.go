@@ -4,7 +4,7 @@ import (
 	"gin-template/auth"
 	"gin-template/common"
 	"gin-template/common/enum"
-	"gin-template/common/errorCode"
+	errorCode "gin-template/common/error_code"
 	"gin-template/global"
 	"net/http"
 	"strings"

@@ -3,7 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"gin-template/common/enum"
-	"gin-template/common/errorCode"
+	errorCode "gin-template/common/error_code"
 	"gin-template/global"
 
 	"github.com/gin-gonic/gin"

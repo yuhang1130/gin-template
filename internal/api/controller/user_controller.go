@@ -2,7 +2,7 @@ package controller
 
 import (
 	"gin-template/common"
-	"gin-template/common/errorCode"
+	errorCode "gin-template/common/error_code"
 	"gin-template/global"
 	"gin-template/internal/api/request"
 	"gin-template/internal/service"

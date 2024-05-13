@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"gin-template/auth"
 	"gin-template/common/enum"
-	"gin-template/common/errorCode"
+	errorCode "gin-template/common/error_code"
 	"gin-template/common/utils"
 	"gin-template/global"
 	"gin-template/internal/api/request"
