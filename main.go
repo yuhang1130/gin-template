@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	defer global.RedisStore.Close() // 确保在程序结束时关闭store连接
+	defer dbClosed()
 	router := initialize.Init()
 	mode := global.Config.Server.Level
 	gin.SetMode(mode)
@@ -19,4 +19,9 @@ func main() {
 		global.Log.Error("Server Run Fail!")
 	}
 	global.Log.Warn("Server Run Success!")
+}
+
+func dbClosed() {
+	// 确保在程序结束时关闭store连接
+	global.RedisStore.Close()
 }
