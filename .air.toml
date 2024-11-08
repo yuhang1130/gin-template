@@ -8,7 +8,7 @@ tmp_dir = "tmp"
 # [build] 部分包含了构建项目的配置
 [build]
 # cmd 表示构建项目的命令
-cmd = "go build -o ./tmp/main ./cmd/web/main.go"
+cmd = "go build -o ./tmp/main main.go"
 # bin 表示构建后的二进制文件的路径
 bin = "./tmp/main"
 # full_bin 表示完整的运行命令，包括二进制文件和参数
