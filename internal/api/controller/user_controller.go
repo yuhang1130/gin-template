@@ -35,7 +35,7 @@ func (uc *UserController) Register(ctx *gin.Context) {
 	err := uc.service.Register(ctx, userDto)
 	if err != nil {
 		code = errorCode.ERROR
-		global.Log.Warnf("UserController Register 解析失败 Error: %s \n", err.Error())
+		global.Log.Warnf("UserController Register Error: %s \n", err.Error())
 		ctx.JSON(http.StatusOK, common.Result{
 			Code: code,
 			Msg:  err.Error(),
