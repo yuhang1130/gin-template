@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/spf13/viper"
 )
@@ -49,10 +50,17 @@ type AllConfig struct {
 }
 
 func InitLoadConfig() *AllConfig {
-	envStr := flag.String("env", "dev", "Environment: dev or prod")
-	fmt.Printf("envStr: %s\n", *envStr)
+	// 读取环境变量
+	env := os.Getenv("env")
+	if env == "" {
+		// 如果环境变量未设置，则使用命令行标志
+		envStr := flag.String("env", "dev", "Environment: dev or prod")
+		flag.Parse()
+		env = *envStr
+	}
+	println("Environment:", env)
 	// 设置配置文件的名称（不需要扩展名）
-	viper.SetConfigName(fmt.Sprintf("gin-%s", *envStr))
+	viper.SetConfigName(fmt.Sprintf("gin-%s", env))
 
 	// 设置配置文件的类型为yaml
 	viper.SetConfigType("yaml")

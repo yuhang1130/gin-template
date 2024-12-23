@@ -11,9 +11,9 @@ datasource:
   config: charset=utf8mb4&parseTime=True&loc=Local
 
 redis:
-  host: localhost
+  host: redis-c44f43bd-58c3-4908-92c1-8e3b3f19dfe1.cn-south-1.dcs.myhuaweicloud.com
   port: 6379
-  password:
+  password: wvMn4OBlhXuCJ68VK
   data_base: 1
   store_db: 2
 

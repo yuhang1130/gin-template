@@ -29,7 +29,7 @@ func initRedis() *redis.Client {
 func initRedisStore() *redistore.RediStore {
 	redisOpt := global.Config.Redis
 	store, err := redistore.NewRediStoreWithDB(
-		10, "tcp", fmt.Sprintf("%s:%s", redisOpt.Host, redisOpt.Port), "", redisOpt.StoreDb, []byte(global.Config.Jwt.Secret),
+		10, "tcp", fmt.Sprintf("%s:%s", redisOpt.Host, redisOpt.Port), redisOpt.Password, redisOpt.StoreDb, []byte(global.Config.Jwt.Secret),
 	)
 	if err != nil {
 		global.Log.Errorf("redisStore Init Fail. Msg: %+v \n", err.Error())

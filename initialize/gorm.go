@@ -3,7 +3,6 @@ package initialize
 import (
 	"errors"
 	"gin-template/global"
-	"gin-template/internal/model"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -55,19 +54,7 @@ func initDatabase() *gorm.DB {
 	// 限流器中间件
 	GormRateLimiter(db, rate.NewLimiter(500, 1000))
 
-	// 自动迁移表结构
-	dbAutoMigrate(db)
 	return db
-}
-
-// 自动迁移表结构
-func dbAutoMigrate(db *gorm.DB) {
-	err := db.AutoMigrate(
-		&model.User{},
-	)
-	if err != nil {
-		global.Log.Errorln("gorm: 自动迁移表结构失败. Err:", err)
-	}
 }
 
 // 慢查询日志
